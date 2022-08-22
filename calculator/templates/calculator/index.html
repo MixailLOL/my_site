@@ -1,0 +1,125 @@
+{% extends 'calculator/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  Calculator
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
+
+{% block header %}
+  
+  
+{% endblock %}
+
+{% block content %}
+  <div id = "my_evo_now" class = "text-3xl mr-auto text-center flex flex-col text-blue-900 h-32">
+
+      <div>My evo</div>
+
+       <input type="number" id = "my_evo" class = "bg-blue-200 w-full focus:outline-none text-center shadow-xl h-20">
+
+    </div>
+
+  </div>
+
+  <div id="my_credits" class = "text-3xl mr-auto text-center flex flex-col text-blue-900 h-36">
+
+    <div id ="my_credits_title" class="relative w-full">My credits</div>
+
+    <div id="credits_input" class="relative flex flex-row ">
+
+      <div class="w-4/6">
+        <input type="number" id = "my_credits_value" class = "bg-blue-200 focus:outline-none text-center shadow-xl w-full h-full">
+      </div>
+
+      <div class="w-2/6 flex flex-col relative">
+        <div class="h-3/12 my-0 py-0">
+          <button id="multi_credits_up" class="w-full">▲</button>
+        </div>
+        <div class="h-6/12">
+          <h5 id="credits_multi" class = "text-base bg-blue-200 focus:outline-none w-full shadow-xl text-center" value = "K (Thousand)">K (Thousand)</h5>
+        </div>
+        <div class="h-3/12 my-0 py-0">
+          <button id="multi_credits_down" class="w-full">▼</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="my_gold" class = "text-3xl mr-auto text-center flex flex-col text-blue-900 h-36">
+
+    <div id ="my_gold_title" class="relative w-full">My gold</div>
+
+    <div id="gold_input" class="relative flex flex-row ">
+
+      <div class="w-4/6">
+        <input type="number" id = "my_gold_value" class = "bg-blue-200 focus:outline-none text-center shadow-xl w-full h-full">
+      </div>
+
+      <div class="w-2/6 flex flex-col relative">
+        <div class="h-3/12 my-0 py-0">
+          <button id="multi_gold_up" class="w-full">▲</button>
+        </div>
+        <div class="h-6/12">
+          <h5 id="gold_multi" class = "text-base bg-blue-200 focus:outline-none w-full shadow-xl text-center" value = ".">.</h5>
+        </div>
+        <div class="h-3/12 my-0 py-0">
+          <button id="multi_gold_down" class="w-full">▼</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div id="font-sans" class = "text-3xl mr-auto text-center flex flex-col text-blue-900 h-24">
+    <div id ="discount_title" class="w-full">Discount</div>
+
+    <div id = "discount_input" class="flex flex-row ">
+      <div class="w-1/6 mx-auto my-auto px-auto py-auto">
+        <button id="discount_down" class="h-full">◀</button>
+      </div>
+
+      <div class="w-3/6">
+        <h5 id="discount" class="text-3xl mr-auto text-center flex flex-col text-blue-900 h-full bg-blue-200 w-full">0 %</h5>
+      </div>
+
+      <div class="w-1/6 mx-auto my-auto">
+        <button id="discount_up" class="h-full">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <div id = "new_evo_div" class="relative mr-auto text-center flex flex-col text-blue-900 h-full bg-green-400 bg-opacity-50 mix-blend-normal h-20" >
+    <div id = "new_evo" class="flex-grow text-4xl text-center m-auto p-auto align-middle inline-block h-full " >---</div>
+  </div>
+
+  <div id="like_btn" class="text-center mt-4 w-full">
+      <a href = "https://www.facebook.com/photo/?fbid=262177215767737&set=a.106004724718321/" target="_blank" class="text-blue-900 text-2xl  h-1/2 button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-400 text-center m-auto buttom-1/4 shadow-xl">
+      ❤
+      </a>
+  </div>
+
+  <div id="buttom" class="relative top-1/2 my-4 w-full  content-end ">
+    <div class="w-full h-full flex flex-wrap ">
+      <button id = "calculat_btn" class = "text-blue-900 text-5xl w-3/4 h-1/2 button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-400 text-center m-auto buttom-1/4 shadow-xl">Calculate</button>
+    </div>
+  </div>
+
+  
+{% endblock %}
+
+{% block footer %}
+  
+{% endblock %}

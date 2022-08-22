@@ -1,0 +1,23 @@
+{% extends 'calculator/base.html' %}
+
+{% block title %}
+  Players table
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  {% for player in players%}
+    <div class="text-3xl mr-auto text-center text-blue-900 shadow-xl">
+      <p>{{player.name}}</p>
+      <p>Evo {{player.evo}}</p>
+      <p><a href="{{player.url}}" target="blank"><button class = "text-blue-900 button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-400 text-center m-auto shadow-xl">Facebook</button></a></p>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

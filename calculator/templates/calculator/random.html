@@ -1,0 +1,162 @@
+{% extends 'calculator/base.html' %}
+
+{% block title %}
+  Random
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://masonry.desandro.com/masonry.pkgd.min.js"></script>
+<script>
+const screenWidth = window.screen.width
+const screenHeight = window.screen.height
+let old_h = 0;
+let old_w = 0;
+let old_alternative_id = 0;
+let pic_id = 0;
+let is_time_to_wait = 0;
+let alternative_pick_data;
+let alternative_pick_source;
+let alternative_pick_list_done = 0;
+let picture_type = 'original';
+;(() => {
+  window.addEventListener("scroll", checkPosition)
+  window.addEventListener("resize", checkPosition)
+})()
+
+function checkPosition() {
+  const height = document.body.offsetHeight
+  const screenHeight = window.innerHeight
+  const scrolled = window.scrollY
+  const threshold = height - screenHeight / 2
+  const position = scrolled + screenHeight
+  if (position >= threshold && is_time_to_wait == 0) {
+    add_picture();
+  }
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function sleep(delay) {
+  var start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
+  is_time_to_wait = 0;
+}
+
+function getDimensions(_src,_callback){
+     var img = document.createElement('img');
+     img.src=_src;
+     img.onload = function () { _callback(img.width,img.height) };
+}
+
+function get_alternative_pick_list(){
+  let years = Math.floor(Math.random() * (2021 - 2016) + 2016);
+  let month = String(Math.floor(getRandomInt(2)))+ String(Math.floor(Math.random() * (2 - 1) + 1))
+  let day = String(Math.floor(getRandomInt(2)))+ String(Math.floor(Math.random() * (9 - 1) + 1))
+  console.log(years, month, day)
+  let flickr_url_interesting = 'https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=03593667c94923eef10be7a5eca89b13&per_page=300&page=1&date='+years+'-'+month+'-'+day+'&safe_search=1&format=json&nojsoncallback=1'
+  let photo_id
+
+  $.ajax({
+		method: 'GET',
+		url:flickr_url_interesting,
+		dataType:'JSON',
+		success: function(data){
+		  console.log("Alternative list done");
+		  alternative_pick_data = (data);
+		  alternative_pick_list_done = 1;
+		}
+  })
+}
+
+function get_alternative_pick(data){
+  let photo_num = Math.floor(Math.random() * ((data.photos.photo).length - 1) + 1);
+  if(photo_num == old_alternative_id){
+    get_alternative_pick(data);
+    return;
+  }
+  old_alternative_id = photo_num;
+  let photo_pre_id = data.photos.photo[photo_num]
+  photo_id = (photo_pre_id.id)
+  $.ajax({
+        method: 'GET',
+        url:'https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=03593667c94923eef10be7a5eca89b13&photo_id='+photo_id+'&format=json&nojsoncallback=1',
+        dataType:'JSON',
+        success: function(data){
+          let pick_size = data.sizes.size[8];
+          alternative_pick_source = pick_size.source;
+        }
+  })
+}
+
+function add_picture(){
+  if(picture_type == 'original'){
+    var apiurl, myresult;
+    apiurl = "https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=dcc0155e86f4c33c457870f4949c26db&per_page=1&page=1&format=json&nojsoncallback=1";
+    console.log("Req now.")
+    $.ajax({
+          method: 'GET',
+          url:apiurl,
+          dataType:'JSON',
+          success: function(data){
+              $.each(data.photos.photo,function(i,myresult){
+                  let pick_source = "https://farm"+myresult.farm+".staticflickr.com/"+myresult.server+"/"+myresult.id +"_"+myresult.secret+".jpg";
+                  getDimensions(pick_source,function(w,h){
+                    if((h != old_h) || (w != old_w)){
+                      $("#results").append('<div ><img class = "block px-auto mx-auto w-'+ screenWidth +' id = '+ pic_id + ' style="width:32.9%; float:left;" src='+pick_source+'/></div>');
+                      pic_id++;
+                      old_h = h;
+                      old_w = w;
+                      sleep(10);
+                    }
+                    else{
+                      if(alternative_pick_list_done == 1 ){
+                        picture_type = 'alternative';
+                      }
+                      else{
+                        add_picture();
+                      }
+                    }
+                  });
+              });
+          }
+    });
+  }
+  else{
+    if(alternative_pick_list_done == 1 ){
+      console.log('alternative now');
+      get_alternative_pick(alternative_pick_data);
+      let pick_source = alternative_pick_source;
+      console.log(pick_source);
+      $("#results").append('<div ><img class = "block px-auto mx-auto w-'+ screenWidth +' id = '+ pic_id + ' style="width:32.9%; float:left;" src='+pick_source+'/></div>');
+      pic_id++;
+      picture_type = 'original';
+    }
+    else{
+      picture_type = 'original';
+    }
+  }
+}
+
+$(document).ready(function(){
+  document.getElementById('head').style.display='none';
+  alternative_pick_data = get_alternative_pick_list()
+  picture_type = 'alternative';
+  for (var i = 0; i < 5; i++) {
+    add_picture();
+  }
+});
+
+</script>
+
+<div id="results" class="flex flex-col w-full h-full"></div>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}

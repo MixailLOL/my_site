@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="ru" class="h-full w-full">
+<head >
+  <link rel="stylesheet" href="{% static 'css/tailwind.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <meta charset="utf-8" />
+  <title>
+  {% block title %}{% endblock %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  {% block js %}{% endblock %}
+</head>
+<body>
+
+<header id = "head" class = "sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl mr-auto text-center flex flex-row text-white h-16 bg-blue-400">
+  {% block header %}
+
+  {% endblock %}
+  
+  <div class="mx-8 my-auto">
+      <a href = "{% url 'calculator' %}">Calculator</a>    
+  </div>
+<!--
+  <div class="mx-8 my-auto">
+      <a href = "{% url 'quiz' %}">Quiz</a>
+  </div>
+
+  <div class="mx-8 my-auto">
+      <a href = "{% url 'players_table' %}">Players table</a>    
+  </div>
+
+  <div class="mx-8 my-auto">
+    <a href = "{% url 'add_account' %}">Add account</a>   
+  </div>-->
+
+</header>
+
+<div>
+  {% block content %}{% endblock %}
+</div>
+
+<footer>
+  {% block footer %}{% endblock %}
+</footer>
+ 
+</body>
+</html>

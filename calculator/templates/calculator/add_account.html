@@ -1,0 +1,76 @@
+{% extends 'calculator/base.html' %}
+
+
+{% load static %}
+
+
+{% block title %}
+  Add account
+{% endblock %}
+
+
+{% block js %}
+  
+{% endblock %}
+
+
+{% block header %}
+
+{% endblock %}
+
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class = "text-3xl mr-auto text-center flex flex-col text-blue-900">
+    <div>
+      <div>
+        Facebook account link  
+      </div>
+      
+      <div class = "bg-blue-200 focus:outline-none text-center shadow-xl w-full h-full">
+      {{ form.url }}    
+      </div>
+    </div>
+
+    <div>
+      <div>
+        Evo    
+      </div>
+      <div class = "bg-blue-200 focus:outline-none text-center shadow-xl w-full h-full">
+        {{ form.evo }}    
+      </div>
+    </div>
+    
+    <div>
+      <div>
+        Your name on Facebook    
+      </div>
+      <div class = "bg-blue-200 focus:outline-none text-center shadow-xl w-full h-full">
+        {{ form.name }}    
+      </div>
+    </div>
+
+    <div>
+      <div>
+        Screen of your evo (open evo center)
+      </div>
+      <div>
+        {{ form.image }}
+      </div>
+    </div>  
+    
+    <div>
+      <button class = "text-blue-900 text-5xl button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-400 text-center m-auto shadow-xl">Submite</button>
+    </div>  
+  </div>
+  
+</form>
+  
+    
+{% endblock %}
+
+
+{% block footer %}
+
+{% endblock %}

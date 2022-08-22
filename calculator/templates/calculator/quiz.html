@@ -1,0 +1,175 @@
+{% extends 'calculator/base.html' %}
+
+{% block title %}
+  Quiz
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://masonry.desandro.com/masonry.pkgd.min.js"></script>
+
+
+<script>
+  let dlt_flag = 0;
+  let elem_is = 0;
+  let data_from_django = {{ data_from_py|safe }};
+  let btn_true = 0;
+  let src_true;
+  let true_name;
+
+  function getDimensions(_src,_callback){
+     var img = document.createElement('img');
+     img.src=_src;
+     img.onload = function () { _callback(img.width,img.height) };
+  }
+
+  function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  function arrayRandElement(arr) {
+    var rand = Math.floor(Math.random() * arr.length);
+    return arr[rand];
+  }
+
+  function rename_btm(true_name){
+    let answers = shuffle([true_name, arrayRandElement(data_from_django)[0], arrayRandElement(data_from_django)[0]]);
+    var btn1 = document.getElementById('answer1');
+    var btn2 = document.getElementById('answer2');
+    var btn3 = document.getElementById('answer3');
+    if(answers[0] == true_name){
+      btn_true = 0;
+    }else if(answers[1] == true_name){
+      btn_true = 1;
+    }else{btn_true = 2;}
+    btn1.innerHTML = String(answers[0]);
+    btn2.innerHTML = String(answers[1]);
+    btn3.innerHTML = String(answers[2]);
+  }
+
+  function quiz_click(btn_num){
+    var div_nxt = document.getElementById('btn_next_div');
+    div_nxt.style.display = 'block';
+    var btn1 = document.getElementById('answer1');
+    var btn2 = document.getElementById('answer2');
+    var btn3 = document.getElementById('answer3');
+
+    btn1.style.display = 'none';
+    btn2.style.display = 'none';
+    btn3.style.display = 'none';
+    var img = new Image();
+    img.src = src_true;
+    img.id = 'dlt_me';
+    canvas = document.getElementById('canvas_img');
+    canvas.style.display = 'none';
+    document.getElementById('img_div').appendChild(img);
+    dlt_flag = 1;
+    var newNode = document.createElement('div');
+    newNode.id = 'dlt_this_node';
+    newNode.innerHTML = true_name;
+    if(btn_num == btn_true){
+      newNode.style.color = 'green';
+    }else{newNode.style.color = 'red';}
+    document.getElementById('img_div').appendChild(newNode);
+  }
+
+  function get_pick(){
+      if(dlt_flag == 1){
+        var elem = document.getElementById('dlt_me');
+        elem.parentNode.removeChild(elem);
+        var elem = document.getElementById('dlt_this_node');
+        elem.parentNode.removeChild(elem);
+        dlt_flag = 0;
+      }
+      document.getElementById('answer1').style.display = 'block';
+      document.getElementById('answer2').style.display = 'block';
+      document.getElementById('answer3').style.display = 'block';
+      canvas = document.getElementById('canvas_img');
+      canvas.style.display = 'block';
+      var div_nxt = document.getElementById('btn_next_div');
+      div_nxt.style.display = 'none';
+      var img = new Image();
+      img.id = 'quiz_pick';
+      quest_mutant = arrayRandElement(data_from_django);
+      img.src = String((quest_mutant)[1]);
+      src_true = String((quest_mutant)[1]);
+      true_name = String((quest_mutant)[0]);
+      rename_btm(String((quest_mutant)[0]));
+      img.onerror = function(){get_pick(); is_valid = 0;};
+      if(elem_is == 1){
+        var elem = document.getElementById(img.id);
+        elem.parentNode.removeChild(elem);
+        elem_is = 0;
+      }
+      img.onload = function(){
+        if(elem_is == 0){
+          document.body.appendChild(img);
+        }
+        elem_is = 1;
+        var ctx = document.getElementById('canvas_img').getContext('2d');
+        ctx.globalCompositeOperation = 'source-over';
+        let height = img.height;
+        let width = img.width;
+        canvas = document.getElementById('canvas_img');
+        canvas.height = height + 30;
+        canvas.width = width + 30;
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(0, 0, width+30, height+30);
+        ctx.globalCompositeOperation = 'xor';
+        ctx.drawImage(img, 0 , 0);
+        document.getElementById('quiz_pick').style.display = 'none';
+      }
+  }
+
+  $(document).ready(function(){
+    get_pick();
+  });
+
+
+</script>
+<style>
+    #img_div img{
+      display: block;
+      margin: 0 auto;
+    }
+</style>
+<div id = 'img_div' class="text-center mt-2 text-3xl">
+  <canvas class="mx-auto" id= "canvas_img" width="0" height="0"></canvas>
+</div>
+
+<div id = 'btn_next_div' class="text-center">
+  <button onclick="get_pick();" class = "text-blue-900 text-2xl mt-2 w-full button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-300 text-center m-auto shadow-xl">Next</button>
+</div>
+<div style="flex-col">
+  <div class="text-center">
+    <button onclick="quiz_click(0);" class = "text-blue-900 text-2xl w-full mt-2 mb-1  button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-300 text-center m-auto shadow-xl" id="answer1">Кнопка</button>
+  </div>
+
+  <div class="text-center">
+    <button onclick="quiz_click(1);" class = "text-blue-900 text-2xl w-full mt-2 mb-1  button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-300 text-center m-auto shadow-xl" id="answer2">Кнопка</button>
+  </div>
+
+  <div class="text-center">
+    <button onclick="quiz_click(2);" class = "text-blue-900 text-2xl w-full mt-2 mb-1 button p-2 rounded-full hover:bg-white focus:outline-none bg-blue-300 hover:text-blue-300 text-center m-auto shadow-xl" id="answer3">Кнопка</button>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
