@@ -54,7 +54,8 @@ function answer_check(btn_pressed){
         document.getElementById("good_answers_counter").innerHTML = Number(document.getElementById("good_answers_counter").innerText)+1;
         document.getElementById("good_aswer_div").style.display = 'inline';
         document.getElementById("good_aswer").style.background = true_color[1];
-        document.getElementById("good_aswer").innerHTML = 'Отлично! <br />Очки++  <br />'+String(true_color[0]);
+        document.getElementById("good_answer_out_div").style.background = true_color[1];
+        document.getElementById("good_aswer").innerHTML = 'Отлично! <br />Очки+++++  <br />'+String(true_color[0]);
         change_txt_color('good_aswer');
     }
     else{
