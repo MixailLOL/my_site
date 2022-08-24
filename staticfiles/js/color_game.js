@@ -1,4 +1,4 @@
-import bridge from '@vkontakte/vk-bridge';
+import bridge from '../node_modules/@vkontakte/vk-bridge';
 
 function get_color(colors) {
     color = getRandomInt(1017);

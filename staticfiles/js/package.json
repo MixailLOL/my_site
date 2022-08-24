@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "name": "color_game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "color_game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vkontakte/vk-bridge": "^2.7.0"
+  },
+  "devDependencies":{
+    "@vkontakte/vk-bridge": "^2.7.0"
+  }
+}

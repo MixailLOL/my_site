@@ -1,0 +1,18 @@
+body{
+	background: #667db6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #189ad3, #1ebbd7, #1ebbd7, #189ad3);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #189ad3, #1ebbd7, #1ebbd7, #189ad3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
