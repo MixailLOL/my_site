@@ -1,4 +1,4 @@
-import bridge from '@vkontakte/vk-bridge';
+//import bridge from '@vkontakte/vk-bridge';
 
 function get_color(colors) {
     color = getRandomInt(1017);
@@ -92,7 +92,6 @@ function change_color(colors){
         var core_color = get_color(colors);
         var core_color_max = getMaxOfArray(get_numbers_from_text(core_color[1]));
         var core_color_id = (get_numbers_from_text(core_color[1])).indexOf(core_color_max);
-        console.log('Now')
         for(let color = 0; color < Math.round(colors_number/5)+2; color++){
             var new_color = get_same_color(colors, core_color_id, core_color_max);
             color_arr.push(new_color)
@@ -105,7 +104,6 @@ function change_color(colors){
             $colors_div.insertAdjacentHTML('afterbegin', '<div onclick="answer_check(\'color_'+color+'\')" id="color_'+color+'" class="p-0 m-0 h-full" style="background-color:'+new_color[1]+'; width:'+Math.round(100/(colors_number/5))+'%;"> </div>');
         }
     }
-    console.log(color_arr)
     true_color = getArrayRandElement(color_arr);
     document.getElementById("color_name").innerHTML = true_color[0];
     document.getElementById("colors_to_choice").style.display = 'inline';

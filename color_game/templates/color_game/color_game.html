@@ -1,5 +1,4 @@
 {% load static %}
-{% load compress %}
 
 <html lang="en">
 <head>
@@ -10,15 +9,27 @@
 </head>
 <body class="h-screen w-full select-none" style="font-family: 'Roboto', sans-serif;">
 
-{% compress js %}
-<script type="module" src="{% static 'js/color_game.js' %}" ></script>
-{% endcompress %}
-
+<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+<script src="{% static 'js/color_game.js' %}" type="text/javascript" ></script>
 <script>
     window.onload = function() {
+
         change_color({{ data_from_py|safe }});
+        var init = vkBridge.send("VKWebAppInit");
+        vkBridge.subscribe((e) => console.log(e));
+        console.log(init);
+        var answer = vkBridge.send('VKWebAppGetEmail').then(data => {
+            // Handling received data
+            console.log(data.email);
+        }).catch(error => {});;
+        console.log(answer);
+        if (vkBridge.supports("VKWebAppResizeWindow")) {
+          vkBridge.send("VKWebAppResizeWindow", {"width": 800, "height": 1000});
+        }
     };
+
 </script>
+
 <div id="good_aswer_div" class="w-full h-full text-center text-4xl relative" onclick="change_color({{ data_from_py|safe }})" >
     <div class="w-full h-full relative ">
         <div class="absolute w-full h-full" style="display: table;  top: 0; left: 0;">
